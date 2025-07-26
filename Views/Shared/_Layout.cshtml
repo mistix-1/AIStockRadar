@@ -7,6 +7,152 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AIStockRadar.styles.css" asp-append-version="true" />
+    <style>
+        /* Modern Color Palette */
+        :root {
+            --primary-blue: #007bff; /* Bootstrap's primary */
+            --dark-blue: #1a2a6c;
+            --light-blue: #2a5298;
+            --gradient-start: #203a43; /* Darker blue/green */
+            --gradient-end: #2c5364; /* Lighter blue/green */
+            --text-light: #f8f9fa; /* Off-white */
+            --text-dark: #343a40; /* Dark gray for contrasts */
+            --card-bg: rgba(255, 255, 255, 0.1); /* Slightly transparent white for content cards */
+            --navbar-bg: rgba(255, 255, 255, 0.95); /* Near opaque white for navbar */
+            --footer-bg: rgba(255, 255, 255, 0.98); /* Almost opaque white for footer */
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --footer-height: 80px; /* Approximate height of your footer, ADJUST THIS AFTER INSPECTION */
+        }
+
+        /* Body and HTML for Sticky Footer */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Full page gradient background */
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            background-attachment: fixed; /* Makes gradient fixed when scrolling */
+            color: var(--text-light);
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0; /* Reset default body margin */
+            padding-bottom: var(--footer-height); /* Space for the fixed footer */
+            display: flex; /* Flexbox for layout */
+            flex-direction: column; /* Stack header, main, etc. */
+            min-height: 100vh; /* Ensure body takes at least viewport height */
+        }
+
+        /* Header / Navbar Styling */
+        header nav.navbar {
+            background: var(--navbar-bg) !important; /* Override Bootstrap's bg-white */
+            box-shadow: var(--shadow-light);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            border-bottom: none !important; /* Remove default border */
+        }
+
+            header nav.navbar:hover {
+                background: rgba(255, 255, 255, 1) !important;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+
+        .navbar-brand {
+            color: var(--dark-blue) !important;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+            .navbar-brand:hover {
+                color: var(--light-blue) !important;
+            }
+
+        .navbar-nav .nav-link {
+            color: var(--text-dark) !important; /* Override Bootstrap's text-dark */
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            transition: color 0.3s ease, transform 0.2s ease;
+            padding: 0.5rem 1rem; /* Add some padding for better click area */
+            border-radius: 5px;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: var(--primary-blue) !important;
+                transform: translateY(-2px); /* Subtle lift effect */
+                background-color: rgba(0, 123, 255, 0.05); /* Very light highlight */
+            }
+
+        .navbar-toggler {
+            border-color: rgba(0,0,0,.1);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
+
+
+        /* Main Content Area */
+        .container {
+            flex: 1; /* Allows the container to grow and push the footer down */
+            padding-top: 1rem; /* Space between navbar and content */
+            padding-bottom: 1rem; /* Space before footer (if not handled by body padding-bottom) */
+        }
+
+            .container > main {
+                background: var(--card-bg); /* Soft transparent background */
+                border-radius: 15px;
+                padding: 2.5rem 2rem;
+                box-shadow: var(--shadow-strong);
+                margin-top: 2rem; /* Space below navbar */
+                animation: fadeInUp 0.8s ease forwards;
+                backdrop-filter: blur(5px); /* Frosted glass effect */
+                -webkit-backdrop-filter: blur(5px); /* For Safari */
+            }
+
+        /* Footer Styling */
+        footer.footer {
+            position: absolute; /* Position relative to html */
+            bottom: 0; /* Stick to the bottom */
+            width: 100%;
+            height: var(--footer-height); /* Fixed height for the footer */
+            background: var(--footer-bg);
+            color: var(--text-dark);
+            text-align: center;
+            padding: 1rem 0;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            box-shadow: inset 0 1px 0 rgba(0,0,0,0.05);
+            display: flex; /* Use flexbox to center content */
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+        }
+
+            footer.footer a {
+                color: var(--dark-blue);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+                footer.footer a:hover {
+                    color: var(--light-blue);
+                    text-decoration: underline;
+                }
+
+        /* Simple fadeInUp animation */
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -25,22 +171,27 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
             &copy; 2025 - AIStockRadar - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
