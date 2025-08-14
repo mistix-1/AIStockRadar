@@ -1,9 +1,11 @@
-﻿namespace AIStockRadar.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AIStockRadar.Models
 {
     public class User
     {
-        public int UserId { get; set; }  // Primary Key
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        [Key] public int Id { get; set; }
+        [Required, EmailAddress] public string Email { get; set; }
+        [Required] public string PasswordHash { get; set; }
     }
 }

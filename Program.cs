@@ -1,4 +1,4 @@
-using YourProjectName.Models;
+using AIStockRadar.Models;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
+
 
 // Add this line to register your EF Core SQLite DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -24,6 +26,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 
