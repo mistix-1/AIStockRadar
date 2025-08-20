@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AIStockRadar.Controllers
+public class DashboardController : Controller
 {
-    public class DashboardController : Controller
+    [HttpGet("/Dashboard")]
+    public IActionResult Dashboard()
     {
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
+        var userId = HttpContext.Session.GetInt32("UserId");
+        if (!userId.HasValue) return RedirectToAction("SignIn", "Account");
+
+        return View();
     }
 }

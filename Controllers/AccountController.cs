@@ -11,7 +11,7 @@ namespace AIStockRadar.Controllers
     {
         private readonly AppDbContext _context;
 
-        // Inject the database context
+       
         public AccountController(AppDbContext context)
         {
             _context = context;
@@ -56,18 +56,18 @@ namespace AIStockRadar.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // Simple validation: priorities must be all different
+            
             if (model.Priority1 == model.Priority2 || model.Priority1 == model.Priority3 || model.Priority2 == model.Priority3)
             {
                 ModelState.AddModelError("", "Priorities 1, 2, and 3 must be different.");
                 return View(model);
             }
 
-            // We’re relying on Session until proper auth/claims are added
+            
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (!userId.HasValue)
             {
-                // If no session user, send to SignIn
+                
                 return RedirectToAction("SignIn", "Account");
             }
 

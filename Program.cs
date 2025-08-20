@@ -1,21 +1,29 @@
+using System; // for TimeSpan
 using AIStockRadar.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSession();
 
+// REQUIRED for Session:
+builder.Services.AddDistributedMemoryCache();   // <-- add this line
 
-// Add this line to register your EF Core SQLite DbContext
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(8);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -27,7 +35,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession();
+app.UseSession();  // keep before endpoints
 
 app.UseAuthorization();
 
