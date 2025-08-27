@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using AIStockRadar.Models;
 
-namespace YourProjectName.Data
+namespace AIStockRadar.Data
 {
     public class ApplicationDbContext : DbContext
     {
