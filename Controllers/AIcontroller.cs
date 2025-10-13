@@ -11,6 +11,6 @@ public class AIController : Controller
             return RedirectToAction("SignIn", "Account");
         }
 
-        return View("AIRadar"); // explicitly return AIRadar.cshtml
+        return View("AIRadar"); 
     }
 }
