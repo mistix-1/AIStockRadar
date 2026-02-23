@@ -1,10 +1,20 @@
-﻿@{
-    ViewData["Title"] = "Radar";
-}
+﻿@model AIStockRadar.Models.AiRecommendationViewModel
 
-<div class="container mt-5">
-    <div class="text-center">
-        <h1 class="display-4">Radar Page</h1>
-        <p class="lead text-muted">This feature is coming soon.</p>
-    </div>
+<div class="container text-center py-5">
+    <h1>🤖 AI Stock Recommendation</h1>
+
+    @if (Model.ErrorMessage != null)
+    {
+        <div class="alert alert-warning">@Model.ErrorMessage</div>
+    }
+    else
+    {
+        <div class="card shadow-lg p-4 mt-4 mx-auto" style="max-width: 500px; border-radius: 15px;">
+            <h2 class="text-primary">@Model.Ticker</h2>
+            <hr />
+            <p><strong>AI Confidence:</strong> @Model.Confidence</p>
+            <p><strong>Predicted Volatility:</strong> @Model.Volatility</p>
+            <p class="small text-muted">Based on your database profile: <em>@ViewBag.UserRisk</em></p>
+        </div>
+    }
 </div>
