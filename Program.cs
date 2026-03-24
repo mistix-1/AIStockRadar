@@ -7,8 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-// REQUIRED for Session:
-builder.Services.AddDistributedMemoryCache();   // <-- add this line
+builder.Services.AddDistributedMemoryCache();   
 
 builder.Services.AddHttpContextAccessor();
 
