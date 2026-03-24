@@ -3,18 +3,23 @@
 <div class="container text-center py-5">
     <h1>🤖 AI Stock Recommendation</h1>
 
-    @if (Model.ErrorMessage != null)
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
-        <div class="alert alert-warning">@Model.ErrorMessage</div>
+        <div class="alert alert-warning shadow-sm mt-4 mx-auto" style="max-width: 500px;">
+            <strong>Oops!</strong> @Model.ErrorMessage
+        </div>
     }
     else
     {
         <div class="card shadow-lg p-4 mt-4 mx-auto" style="max-width: 500px; border-radius: 15px;">
-            <h2 class="text-primary">@Model.Ticker</h2>
+            <h2 class="text-primary display-4 fw-bold">@Model.Ticker</h2>
             <hr />
-            <p><strong>AI Confidence:</strong> @Model.Confidence</p>
-            <p><strong>Predicted Volatility:</strong> @Model.Volatility</p>
-            <p class="small text-muted">Based on your database profile: <em>@ViewBag.UserRisk</em></p>
+            <p class="fs-5"><strong>AI Confidence:</strong> @Model.Confidence%</p>
+            <p class="fs-5"><strong>Predicted Volatility:</strong> @Model.Volatility</p>
+
+            <div class="mt-4 p-2 bg-light rounded">
+                <p class="small text-muted mb-0">Based on your database profile: <strong>@Model.RiskLevel</strong></p>
+            </div>
         </div>
     }
 </div>

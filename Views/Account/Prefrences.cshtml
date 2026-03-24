@@ -9,118 +9,156 @@
 
 <form asp-action="Prefrences" asp-controller="Account" method="post" class="mt-4" novalidate>
     @Html.AntiForgeryToken()
-
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!-- Age -->
     <div class="mb-3">
         <label asp-for="Age" class="form-label"></label>
-        <input asp-for="Age" type="number" min="0" step="1" class="form-control" placeholder="e.g., 25" />
+        <input asp-for="Age" type="number" min="0" step="1" class="form-control" placeholder="e.g., 25" id="inputAge" />
         <span asp-validation-for="Age" class="text-danger"></span>
-        <div class="form-text">Used for compliance rules and suitability checks.</div>
     </div>
 
-    <!-- Capital -->
     <div class="mb-3">
         <label asp-for="Capital" class="form-label"></label>
-        <input asp-for="Capital" type="number" min="0" step="0.01" class="form-control" placeholder="e.g., 50000" />
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input asp-for="Capital" type="number" min="0" step="0.01" class="form-control" placeholder="e.g., 50000" id="inputCapital" />
+        </div>
         <span asp-validation-for="Capital" class="text-danger"></span>
-        <div class="form-text">Approximate amount you plan to invest through the app.</div>
     </div>
 
-    <!-- Risk tolerance -->
-    <div class="mb-3">
-        <label class="form-label d-block">Risk tolerance</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" asp-for="RiskTolerance" value="Bad" id="riskBad" />
-            <label class="form-check-label" for="riskBad">I am bad with risk</label>
+    <hr class="my-4" />
+
+    <div class="mb-4">
+        <label class="form-label d-block mb-3">Choose Your Investment Style</label>
+
+        <div class="table-responsive mb-3">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light text-center">
+                    <tr>
+                        <th style="width: 20%;">Strategy</th>
+                        <th style="width: 25%;">The Goal</th>
+                        <th style="width: 25%;">"Price Swings"</th>
+                        <th style="width: 30%;">Est. Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input risk-radio" type="radio" asp-for="RiskTolerance" value="Bad" id="riskBad" data-return="10.8" data-vol="Low" data-stock="META" />
+                                <label class="form-check-label fw-bold text-success" for="riskBad">Low Risk</label>
+                            </div>
+                        </td>
+                        <td><small>Steady growth, sleep easy at night.</small></td>
+                        <td><span class="badge bg-success">Very Low</span></td>
+                        <td class="text-success fw-bold">+10.8%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input risk-radio" type="radio" asp-for="RiskTolerance" value="Ok" id="riskOk" data-return="71.3" data-vol="Medium" data-stock="AMZN" />
+                                <label class="form-check-label fw-bold text-warning" for="riskOk">Moderate</label>
+                            </div>
+                        </td>
+                        <td><small>Balance growth with some market movement.</small></td>
+                        <td><span class="badge bg-warning text-dark">Moderate</span></td>
+                        <td class="text-warning fw-bold">+71.3%</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input risk-radio" type="radio" asp-for="RiskTolerance" value="Good" id="riskGood" data-return="85.2" data-vol="High" data-stock="TSM" />
+                                <label class="form-check-label fw-bold text-danger" for="riskGood">High Risk</label>
+                            </div>
+                        </td>
+                        <td><small>Maximum growth, frequent price jumps.</small></td>
+                        <td><span class="badge bg-danger">Aggressive</span></td>
+                        <td class="text-danger fw-bold">+85.2%</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" asp-for="RiskTolerance" value="Ok" id="riskOk" />
-            <label class="form-check-label" for="riskOk">I am ok with risk</label>
+
+        <div id="risk-explanation" class="p-3 border rounded bg-light mb-3 d-none">
+            <h6 id="exp-title" class="fw-bold mb-1"></h6>
+            <p id="exp-body" class="small text-muted mb-0"></p>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" asp-for="RiskTolerance" value="Good" id="riskGood" />
-            <label class="form-check-label" for="riskGood">I am good with risk</label>
-        </div>
-        <span asp-validation-for="RiskTolerance" class="text-danger"></span>
-        <div class="form-text">Influences position sizing and sell/hold thresholds.</div>
     </div>
 
-    <!-- Priority ladder -->
-    <div class="mb-3">
-        <label class="form-label d-block">Ranking priorities (1 is highest)</label>
-
+    <div class="mb-3 d-none">
         <div class="row g-2">
             <div class="col-12 col-md-4">
-                <label asp-for="Priority1" class="form-label"></label>
-                <select asp-for="Priority1" class="form-select">
-                    <option value="" disabled selected>Choose…</option>
+                <select asp-for="Priority1" class="form-select" id="Priority1">
+                    <option value="" disabled selected>Choose Priority 1</option>
                     <option value="Buzz">Buzz</option>
                     <option value="Financials">Financials</option>
                     <option value="GlobalTrend">Global trend</option>
                 </select>
-                <span asp-validation-for="Priority1" class="text-danger"></span>
             </div>
             <div class="col-12 col-md-4">
-                <label asp-for="Priority2" class="form-label"></label>
-                <select asp-for="Priority2" class="form-select">
-                    <option value="" disabled selected>Choose…</option>
+                <select asp-for="Priority2" class="form-select" id="Priority2">
+                    <option value="" disabled selected>Choose Priority 2</option>
                     <option value="Buzz">Buzz</option>
                     <option value="Financials">Financials</option>
                     <option value="GlobalTrend">Global trend</option>
                 </select>
-                <span asp-validation-for="Priority2" class="text-danger"></span>
             </div>
             <div class="col-12 col-md-4">
-                <label asp-for="Priority3" class="form-label"></label>
-                <select asp-for="Priority3" class="form-select">
-                    <option value="" disabled selected>Choose…</option>
+                <select asp-for="Priority3" class="form-select" id="Priority3">
+                    <option value="" disabled selected>Choose Priority 3</option>
                     <option value="Buzz">Buzz</option>
                     <option value="Financials">Financials</option>
                     <option value="GlobalTrend">Global trend</option>
                 </select>
-                <span asp-validation-for="Priority3" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-text mt-2">
-            We’ll convert 1st/2nd/3rd into multipliers 3×/2×/1× for the three AIs.
-        </div>
-
-        <div class="mt-2 d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleExplain('buzz')">What is Buzz?</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleExplain('financials')">What are Financials?</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleExplain('global')">What is Global Trend?</button>
-        </div>
-        <div id="explain-buzz" class="small text-muted mt-2" style="display:none;">
-            Buzz AI scans news/social chatter to gauge market attention. High buzz can move prices, but beware hype.
-        </div>
-        <div id="explain-financials" class="small text-muted mt-2" style="display:none;">
-            Financials AI grades companies on revenue, profitability, cash runway, debt, etc., adjusted for their stage.
-        </div>
-        <div id="explain-global" class="small text-muted mt-2" style="display:none;">
-            Global Trend AI looks for structural themes (e.g., AI infrastructure, energy transitions) and leaders/enablers.
         </div>
     </div>
 
-    <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Save preferences</button>
+    <div class="d-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-primary px-4">Save & View Recommendations</button>
     </div>
 </form>
 
 <script>
-    function toggleExplain(which) {
-        const id = { buzz: 'explain-buzz', financials: 'explain-financials', global: 'explain-global' }[which];
-        const el = document.getElementById(id);
-        if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
+    const capInput = document.getElementById('inputCapital');
+    const riskRadios = document.querySelectorAll('.risk-radio');
+    const expBox = document.getElementById('risk-explanation');
+    const expTitle = document.getElementById('exp-title');
+    const expBody = document.getElementById('exp-body');
+
+    function updateRiskUI() {
+        const capital = parseFloat(capInput.value) || 0;
+        const selected = document.querySelector('.risk-radio:checked');
+
+        if (selected) {
+            expBox.classList.remove('d-none');
+            const type = selected.value;
+            const ret = selected.dataset.return;
+            const stock = selected.dataset.stock;
+            const possibleGain = (capital * (parseFloat(ret)/100)).toLocaleString();
+
+            if (type === "Bad") {
+                expTitle.innerText = "🛡️ Conservative Strategy (Low Risk)";
+                expBody.innerText = `You are prioritizing safety. If you invest $${capital.toLocaleString()}, we target a gain of about $${possibleGain}. The stock prices will move slowly, similar to a savings account but with market upside. Example pick: ${stock}.`;
+            } else if (type === "Ok") {
+                expTitle.innerText = "⚖️ Balanced Strategy (Mid Risk)";
+                expBody.innerText = `You are looking for strong growth. A $${capital.toLocaleString()} investment targets a gain of $${possibleGain}. Expect some "rollercoaster" weeks where prices move up and down, but the trend remains strong. Example pick: ${stock}.`;
+            } else {
+                expTitle.innerText = "🚀 Aggressive Strategy (High Risk)";
+                expBody.innerText = `You are swinging for the fences. A $${capital.toLocaleString()} investment targets a massive $${possibleGain} gain. Be prepared for sharp price drops and spikes. This is for investors who don't mind a bumpy ride. Example pick: ${stock}.`;
+            }
+        }
     }
 
-    // Prevent duplicate selections across Priority1/2/3
+    capInput.addEventListener('input', updateRiskUI);
+    riskRadios.forEach(r => r.addEventListener('change', updateRiskUI));
+
+    // Priority logic
     const selects = ['Priority1','Priority2','Priority3'].map(id => document.getElementById(id));
     function refreshOptions() {
         const chosen = new Set(selects.map(s => s.value).filter(v => v));
         selects.forEach(s => {
+            if (!s) return;
             Array.from(s.options).forEach(opt => {
                 if (!opt.value) return;
                 opt.disabled = (!s.value || s.value !== opt.value) && chosen.has(opt.value);
